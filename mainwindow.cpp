@@ -94,14 +94,14 @@ static QPushButton* mkBtn(const QString& text,
 
 static QFrame* mkCard(QLayout* lay = nullptr,
                       const QString& bg = C_CARD,
-                      const QString& brd = C_BORDER,
+                      const QString& brd = "transparent",
                       int radius = 12,
                       int padH = 16, int padV = 14)
 {
     auto* f = new QFrame();
     f->setStyleSheet(
-        QString("QFrame{background:%1;border-radius:%2px;border:1px solid %3;}")
-            .arg(bg).arg(radius).arg(brd));
+        QString("QFrame{background:%1;border-radius:%2px;border:none;}")
+            .arg(bg).arg(radius));
     if (lay) {
         lay->setContentsMargins(padH, padV, padH, padV);
         f->setLayout(lay);
@@ -275,8 +275,8 @@ void MainWindow::buildUI()
             card->setStyleSheet(QString(
                                     "QFrame{background:%1;"
                                     "border-radius:10px;"
-                                    "border:1px solid rgba(%2,%3,%4,0.25);}")
-                                    .arg(C_CARD2).arg(ac.red()).arg(ac.green()).arg(ac.blue()));
+                                    "border:none;}")
+                                    .arg(C_CARD2));
             header->addWidget(card);
             return num;
         };
@@ -370,7 +370,7 @@ void MainWindow::buildUI()
         btnRow->addWidget(bUndo, 3);
         pnl->addLayout(btnRow);
 
-        leftCol->addWidget(mkCard(pnl, C_CARD2, C_BORDER, 12, 14, 14));
+        leftCol->addWidget(mkCard(pnl, C_CARD2, "transparent", 12, 14, 14));
 
         connect(bJoin, &QPushButton::clicked, this, &MainWindow::enqueueVoter);
         connect(bNext, &QPushButton::clicked, this, &MainWindow::processNext);
@@ -393,17 +393,17 @@ void MainWindow::buildUI()
         queueList->setFixedHeight(115);
         queueList->setStyleSheet(QString(R"(
             QListWidget {
-                background:%1; border:1px solid %2;
+                background:%1; border:none;
                 border-radius:10px; padding:4px 2px;
                 font-size:12px; font-family:)" FONT_MONO R"(;
             }
             QListWidget::item {
-                color:%3;
+                color:%2;
                 border-radius:6px; padding:5px 10px; margin:2px 4px;
             }
             QListWidget::item:hover   { background:rgba(251,146,60,0.1); }
             QListWidget::item:selected { background:rgba(251,146,60,0.18); }
-        )").arg(C_BG, C_BORDER, C_ORANGE));
+        )").arg(C_BG, C_ORANGE));
         leftCol->addWidget(queueList);
     }
 
@@ -452,14 +452,14 @@ void MainWindow::buildUI()
         logList = new QListWidget();
         logList->setStyleSheet(QString(R"(
             QListWidget {
-                background:%1; border:1px solid %2;
+                background:%1; border:none;
                 border-radius:10px; font-size:12px;
                 font-family:)" FONT_MONO R"(; padding:4px 2px;
             }
             QListWidget::item {
                 border-radius:6px; padding:5px 10px; margin:2px 4px;
             }
-        )").arg(C_BG, C_BORDER));
+        )").arg(C_BG));
         logList->setMinimumHeight(200);
         rightCol->addWidget(logList, 1);
     }
@@ -564,8 +564,8 @@ void MainWindow::buildCandidateCards()
         auto* frame = new QFrame();
         frame->setLayout(row);
         frame->setStyleSheet(QString(
-                                 "QFrame{background:%1;border-radius:10px;border:1px solid %2;}")
-                                 .arg(bgStr, brdStr));
+                                 "QFrame{background:%1;border-radius:10px;border:none;}")
+                                 .arg(bgStr));
         candidatesLayout->addWidget(frame);
         c = c->next;
     }
@@ -661,8 +661,8 @@ void MainWindow::buildLeaderboard()
         auto* frame = new QFrame();
         frame->setLayout(row);
         frame->setStyleSheet(QString(
-                                 "QFrame{background:%1;border-radius:10px;border:1px solid %2;}")
-                                 .arg(bgCol, brdCol));
+                                 "QFrame{background:%1;border-radius:10px;border:none;}")
+                                 .arg(bgCol));
         leaderboardLayout->addWidget(frame);
     }
     leaderboardLayout->addStretch();
