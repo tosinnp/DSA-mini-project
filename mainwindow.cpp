@@ -7,9 +7,6 @@
 #include <QGraphicsDropShadowEffect>
 #include <algorithm>
 
-// ─────────────────────────────────────────────
-//  COLOR PALETTE  (dark, refined, gov-grade)
-// ─────────────────────────────────────────────
 #define C_BG       "#0A0E17"
 #define C_SURFACE  "#111827"
 #define C_CARD     "#141D2E"
@@ -31,15 +28,11 @@
 #define C_SUBTLE   "#64748B"
 #define C_MUTED    "#334155"
 
-// ─────────────────────────────────────────────
-//  FONT STACK
-// ─────────────────────────────────────────────
+
 #define FONT_MONO  "\"Cascadia Code\", \"Fira Code\", \"Courier New\", monospace"
 #define FONT_UI    "\"Segoe UI\", \"SF Pro Display\", \"Helvetica Neue\", sans-serif"
 
-// ─────────────────────────────────────────────
-//  WIDGET HELPERS
-// ─────────────────────────────────────────────
+
 static QLabel* mkLabel(const QString& t, int sz,
                        const QString& col = C_TEXT, bool bold = false,
                        const QString& font = FONT_UI)
@@ -135,9 +128,7 @@ static QLabel* mkTag(const QString& text, const QString& color) {
     return l;
 }
 
-// ─────────────────────────────────────────────
-//  CONSTRUCTOR
-// ─────────────────────────────────────────────
+
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
     setWindowTitle("Nepal Election — Vote Tallying System | COMP 202 DSA · KU");
@@ -194,9 +185,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 
 MainWindow::~MainWindow() {}
 
-// ─────────────────────────────────────────────
-//  BUILD UI
-// ─────────────────────────────────────────────
 void MainWindow::buildUI()
 {
     auto* central = new QWidget();
@@ -207,16 +195,14 @@ void MainWindow::buildUI()
     root->setContentsMargins(24, 20, 24, 20);
     root->setSpacing(16);
 
-    // ── HEADER ───────────────────────────────
     {
         auto* header = new QHBoxLayout();
         header->setSpacing(20);
 
-        // Left: branding
+
         auto* brand = new QVBoxLayout();
         brand->setSpacing(6);
 
-        // Flag accent bar
         auto* flagBar = new QFrame();
         flagBar->setFixedHeight(3);
         flagBar->setStyleSheet(
@@ -248,7 +234,6 @@ void MainWindow::buildUI()
 
         header->addLayout(brand, 1);
 
-        // Right: stat cards
         auto mkStat = [&](const QString& label, const QString& accentColor) -> QLabel* {
             auto* vl = new QVBoxLayout();
             vl->setSpacing(4);
@@ -290,15 +275,13 @@ void MainWindow::buildUI()
 
     root->addWidget(mkHLine());
 
-    // ── BODY ─────────────────────────────────
     auto* body = new QHBoxLayout();
     body->setSpacing(16);
 
-    // ── LEFT COLUMN ──────────────────────────
     auto* leftCol = new QVBoxLayout();
     leftCol->setSpacing(14);
 
-    // Section header: Candidates
+
     {
         auto* secRow = new QHBoxLayout();
         auto* secTitle = mkLabel("CANDIDATES", 10, C_SUBTLE);
@@ -309,7 +292,6 @@ void MainWindow::buildUI()
         leftCol->addLayout(secRow);
     }
 
-    // Candidate scroll area
     {
         auto* scroll = new QScrollArea();
         scroll->setWidgetResizable(true);
@@ -325,7 +307,7 @@ void MainWindow::buildUI()
         leftCol->addWidget(scroll, 1);
     }
 
-    // Vote panel
+
     {
         leftCol->addWidget(mkHLine());
 
@@ -379,7 +361,6 @@ void MainWindow::buildUI()
         connect(voterInput, &QLineEdit::returnPressed, this, &MainWindow::enqueueVoter);
     }
 
-    // Queue display
     {
         auto* qHdr = new QHBoxLayout();
         auto* qTitle = mkLabel("VOTER QUEUE", 10, C_SUBTLE);
@@ -409,11 +390,10 @@ void MainWindow::buildUI()
 
     body->addLayout(leftCol, 3);
 
-    // ── RIGHT COLUMN ─────────────────────────
     auto* rightCol = new QVBoxLayout();
     rightCol->setSpacing(14);
 
-    // Leaderboard
+
     {
         auto* lHdr = new QHBoxLayout();
         auto* lTitle = mkLabel("LIVE LEADERBOARD", 10, C_SUBTLE);
@@ -437,7 +417,6 @@ void MainWindow::buildUI()
         rightCol->addWidget(scroll, 1);
     }
 
-    // Activity log
     {
         rightCol->addWidget(mkHLine());
 
@@ -468,9 +447,7 @@ void MainWindow::buildUI()
     root->addLayout(body, 1);
 }
 
-// ─────────────────────────────────────────────
-//  CANDIDATE CARDS
-// ─────────────────────────────────────────────
+
 void MainWindow::buildCandidateCards()
 {
     QLayoutItem* item;
@@ -572,9 +549,7 @@ void MainWindow::buildCandidateCards()
     candidatesLayout->addStretch();
 }
 
-// ─────────────────────────────────────────────
-//  LEADERBOARD
-// ─────────────────────────────────────────────
+
 void MainWindow::buildLeaderboard()
 {
     QLayoutItem* item;
@@ -668,9 +643,7 @@ void MainWindow::buildLeaderboard()
     leaderboardLayout->addStretch();
 }
 
-// ─────────────────────────────────────────────
-//  REFRESH / STATS / LOG
-// ─────────────────────────────────────────────
+
 void MainWindow::refreshAll()
 {
     buildCandidateCards();
@@ -718,9 +691,6 @@ void MainWindow::addLog(const QString& msg, const QString& color)
     logList->scrollToBottom();
 }
 
-// ─────────────────────────────────────────────
-//  SLOTS
-// ─────────────────────────────────────────────
 void MainWindow::enqueueVoter()
 {
     QString vid = voterInput->text().trimmed().toUpper();
